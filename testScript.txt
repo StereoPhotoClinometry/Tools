@@ -1,0 +1,18 @@
+n
+n
+
+
+2
+8                fill no data with shape slope
+6
+y
+y
+2                condition with existing topo
+.01
+0                begin integration
+.025
+30
+0
+u
+1
+q

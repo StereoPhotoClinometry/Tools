@@ -1,0 +1,13 @@
+# Plot's the output of grep ID > tmpOut
+
+
+set xlabel "Iteration Count"
+set ylabel "Sigma Deviation [cm]"
+set style dat linespoints
+
+
+set output 'roiSigmas.png'
+set terminal png
+plot 'tmpOut' u 0:($2*1000*100) title 'Max Deviation', '' using 0:($3*1000*100) title "Average Deviation"
+
+
