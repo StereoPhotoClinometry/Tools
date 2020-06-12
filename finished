@@ -1,0 +1,30 @@
+# 1 Feb 2018 - Eric E. Palmer
+# This sends an email when a commandline thing is done
+#!/bin/sh
+
+who=`whoami`
+
+str="$1 $2 $3 $4 $5"
+
+h=`history | tail -5`
+
+history | tail -5 | mail -s "Done $str" $who@psi.edu 
+
+
+if [ "$who" == "epalmer" ]
+then
+	echo $str | mail -s "Done $str" 5203014517@tmomail.net
+fi
+
+if [ "$who" == "jweirich" ]
+then
+	echo $str | mail -s "Run-status" 5208346669@txt.att.net
+	echo $str mail -s "Run-Status" jweirich@psi.edu 
+fi
+
+if [ "$who" == "klopez" ]
+then
+	echo $str | mail -s "Done $str" 5208342616@tmomail.net
+	echo $str mail -s "Run-Status" klopez@psi.edu 
+fi
+

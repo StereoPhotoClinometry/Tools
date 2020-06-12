@@ -1,0 +1,16 @@
+# Plots for bigmap SPC Tools
+# Eric E. Palmer 
+
+set term x11
+set style data lines
+
+load 'config.gpi'
+
+plot 'truth.txt' using 0:trans lw 3 title 'Truth', 'model.txt' using 0:trans title 'Model'
+
+set output 'out.png'
+set term png
+replot
+unset output
+set term x11
+

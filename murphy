@@ -1,0 +1,33 @@
+# 1 Feb 2018 - Eric E. Palmer
+# Moves over key files before you do more work that can mess things up
+# If you use a -m option, then it will include mapfiles
+#!/bin/sh
+
+arg=$1
+
+
+who=`whoami | cut -c 1-2`
+
+p=`pwd`
+
+
+dir="../$who""Murphy/"
+mkdir -p $dir
+
+d=`date`
+
+echo "Murphy --- $d --- $p" >> $dir/murphy.txt
+echo "Murphy --- $d --- $p" > $dir/recent.txt
+
+rsync -hapvP SUMFILES $dir/ | tee -a $dir/recent.txt
+rsync -hapvP NOMINALS $dir/ | tee -a $dir/recent.txt
+rsync -hapvP LMKFILES  $dir/ | tee -a $dir/recent.txt
+
+rsync -hapvP MAPINFO.TXT PICINFO.TXT RESIDUALS.TXT  $dir/ | tee -a $dir/recent.txt
+
+#if [ "$arg" == "-m" ]
+#then
+	rsync -hapvP MAPFILES  $dir/ | tee -a $dir/recent.txt
+#fi
+
+

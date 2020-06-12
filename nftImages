@@ -1,0 +1,50 @@
+# Eric E. Palmer - 30 Oct 2019
+# Takes the name of a bigmap and makes a picture
+#		and flips it so it is displayed correctly
+#	If no bigmap, then use everything - didn't work
+
+picName=$1
+bigmap=$2
+
+if [ "$picName" == "" ]
+then
+	echo "Error:  No picture listed"
+	exit
+fi
+
+if [ ! -e SUMFILES/$picName.SUM ]
+then
+	echo "Error:  Can't find SUMFILES/$picName.SUM"
+	exit
+fi
+
+if [ "$bigmap" == "" ]
+then
+	echo "no bigmap"
+	exit
+	#echo "Using all maplets"
+	#/bin/cp -f LMRKLIST.TXT MAPLIST.TXT
+fi
+
+if [ -e MAPFILES/$bigmap.MAP ]
+then
+	echo "Using $bigmap"
+	echo $bigmap > MAPLIST.TXT
+	echo END >> MAPLIST.TXT
+else
+	echo "Error:  Can't find MAPFILES/$bigmap.MAP"
+	exit
+fi
+
+echo $picName > tmpRun
+echo n >> tmpRun
+
+Imager_MG < tmpRun
+
+convert -flip TEMPFILE.pgm $picName.jpg
+
+if [ -e MAPLIST.TXT ] 
+then
+	rm MAPLIST.TXT
+fi
+

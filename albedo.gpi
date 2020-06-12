@@ -1,0 +1,22 @@
+# Eric E. Palmer - 15 Nov 2019
+# Plots the albedo as a single channel
+
+set term png size 512,512
+set output 'out.png'
+
+
+set palette gray 
+set title "Albedo"
+
+unset key
+set yr [0:*]  reverse
+set pm3d map
+splot 'XXXXXX.TXT' matrix
+
+
+
+
+
+unset output
+#set term x11
+

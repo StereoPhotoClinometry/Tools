@@ -1,0 +1,88 @@
+# Eric E. Palmer - 29 Oct 2019
+# Ensures variables are set correctly.
+
+
+# The system starts off not failing
+fail=0
+
+# Bring in local variables
+ID=$1
+Res=$2
+logP=$3
+
+# Test each condition and see if something isn't correctly
+#		set.  Fail if it is wrong
+if [ "$ID" == "" ] 
+then
+	err="ID is not set"
+	fail=1
+fi
+
+if [ "$ID" == "00000" ] 
+then
+	err="ID is 00000"
+	fail=1
+fi
+
+if [ "$Res" == "" ] 
+then
+	err="Res not sest"
+	fail=1
+fi
+
+if [ "$logP" == "" ] 
+then
+	err="logP not sest"
+	fail=1
+fi
+
+# Check to see if there is a log file directory
+inFile="log/$ID$Res"
+if [ ! -e "$inFile" ]
+then
+	err="logP ($inFile) has not been created"
+	fail=1
+fi
+
+# Look at config/nftID and see if it is set
+inFile=config/nftID
+if [ ! -e $inFile ]
+then
+	err="Cannot find $inFile file"
+	fail=1
+else
+	curr=`cat $inFile | head -1 | cut -c 5-9`
+fi
+
+if [ "$curr" != "$ID" ]
+then
+	err="config/nftID is $curr, but ID is $ID"
+	fail=1
+fi
+
+if [ -e BIGMAP.IN ]
+then
+	err="BIGMAP.IN exists --- very bad.  Please delete"
+	fail=1
+fi
+
+# If the system lacks configuration, get stuck in
+#		a loop to "use up" all copy/pasted text
+#		control-C or "I am done" is needed to exit
+if [ "$fail" == "1" ] 
+then
+	echo "################## ERROR #################"
+	echo "################## ERROR #################"
+	echo "Variables are not set correctly"
+	echo "#### $err ###"
+	echo "Use Ctl-C to exit.  Dumping all text until I am done"
+	echo "################## ERROR #################"
+	echo "################## ERROR #################"
+   while [ "$choice" != "I am done" ]
+	do
+		read -p ">" choice
+	done
+
+echo "Yes you are.  Now do it correctly"
+
+fi

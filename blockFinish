@@ -1,0 +1,263 @@
+# P593907601A2
+# Eric E. Palmer - 13 Feb 2018
+# Copies things into subdirectories for archving
+# Run when a block if finished.
+
+phase=$1
+who=`whoami | cut -c 1-2`
+
+if [ "$phase" == "" ] 
+then
+	echo "################## ERROR #################"
+	echo "No Phase"
+	echo "Usage:  <Phase.day>"
+	exit
+fi
+
+if [ ! -e "../log/$phase" ]
+then
+	echo "################## ERROR #################"
+	echo "Phase $phase does not exist"
+	read -p "Create it (y/n)?" choice
+	case "$choice" in 
+  	y|Y ) 
+			echo "Creating $phase";;
+  	n|N ) 
+			echo "Stopping"
+			exit ;;
+  	* ) 
+			echo "invalid"
+			echo "Stopping - try again"
+			exit;;
+	esac
+fi
+
+# Check to see if we are still editing notes
+running=`ps | grep vi | grep notes`
+
+if [ "$running" != "" ]
+then
+	echo
+	echo "################## ERROR #################"
+	echo "# Are you still editing notes?           #"
+	echo "################## ERROR #################"
+	exit
+fi
+
+if [ ! -e notes ]
+then
+	echo
+	echo "################## ERROR #################"
+	echo "# Please create a notes file             #"
+	echo "################## ERROR #################"
+	exit
+fi
+
+
+# find the sequence number
+
+	touch -f ../log/$phase		# ensure we don't get an error on ls
+	tmp=../log/$phase*
+	lines=`/bin/ls -d1 $tmp | wc -l`
+	read -rd '' newLines <<< "$lines"
+	echo "new: " $newLines
+
+	if [ "$newLines" -lt 10 ] 
+	then
+		outLines=0$newLines
+	else
+		outLines=$newLines
+	fi
+
+
+
+# Get from the user which block has been completed
+echo "Which block has been finished"
+select answer in "ingest" "reg"  "pole" "limber" "auto" "tileL" "tileM" "it" "shape" "clean" "nft" "quit"; do
+	# Identify the correct directory for this
+	echo $answer
+
+	try=../log/$phase.$outLines$answer
+
+	# Find the next available slot
+	if [ -e $try ]
+	then
+		echo
+		echo "################## ERROR #################"
+		echo "# Error - I don't have the right path"
+		echo "################## ERROR #################"
+	else
+		path=$try
+	fi
+
+	# Found the directory, now make it
+	mkdir -p $path
+
+	case $answer in
+		ingest ) 
+			processEval.sh new$phase
+			cp evalOut.txt $path
+			
+			cp make_sumfiles.txt $path
+			cp make_sumfiles.in $path
+			cp newpix.txt $path
+			ls -l DATA > $path/dataFiles.txt
+			mv ~/send/thumb-* $path
+			str="Ingest"
+			break;;
+
+		reg ) 
+			registerEval.sh 
+
+			/bin/cp -f eval* $path
+			/bin/cp -f make_scriptR.seed $path
+			/bin/cp -f make_script.in $path
+
+			/bin/mv -f *OOT *INN $path
+			/bin/mv -f TESTFILES/*.pgm $path
+
+			evalReg.sh theFour
+			/bin/mv -f ~/send/limb-* $path
+			str="Register"
+			break;;
+
+		pole ) 
+			str="Pole"
+			cp POLE.TXT $path
+			cp INIT_LITHOS.TXT $path
+			cp make_sumfiles.txt $path
+			file=`grep tpc INIT_LITHOS.TXT | grep -v \# | cut -c 5-`
+			echo ">>$file<<"
+			cp $file $path
+			break;;
+
+		limber ) 
+			str="Limber"
+			mv LIMBVECS.TXT $path
+			mv LIMBFILES/* $path
+			cp LIMBER.IN $path
+			mv -f ~/send/thumb*jpg $path
+			mv -f ~/send/limb-*jpg $path
+			if [ -e LIMBER.TXT  ]
+			then
+				cp LIMBER.TXT $path
+			fi
+
+			break;;
+
+		auto ) 
+			find_nofit > fit
+			autoEval.sh
+
+			cp fit $path
+			cp eval/* $path
+			cp make_scriptA.seed $path
+			cp make_script.in $path
+
+			mv *OOT *INN $path
+			mv TESTFILES/*.pgm $path
+			str="Autoregister"
+			break;;
+
+		nft ) 
+			#find_nofitT > fit
+			#tileEval.sh
+
+			#cp -f coverage_*.pgm $path
+			#cp -f evalOut.txt $path
+			#cp -f make_scriptT.in $path
+			#tmp=`head -1 make_scriptT.in | tail -1`
+			#cp -f $tmp $path
+			#mv -f *OOT *INN $path
+			#mv -f TESTFILES/*.pgm $path
+
+			mv -f eval/* $path
+			mv -f log/* $path
+			str="NFT"
+			break;;
+
+		tileL ) 
+			find_nofitT > fit
+			tileEval.sh
+
+			cp -f coverage_*.pgm $path
+			cp -f eval/*.txt $path
+			cp -f make_scriptT.in $path
+			tmp=`head -1 make_scriptT.in | tail -1`
+			cp -f $tmp $path
+			mv -f *OOT *INN $path
+			mv -f TESTFILES/*.pgm $path
+			str="Tile LatLon"
+			break;;
+
+		tileM ) 
+			find_nofitT > fit
+			tileEval.sh
+
+			cp -f coverage_*.pgm $path
+			cp -f eval/*.txt $path
+			cp -f make_scriptT.in $path
+			tmp=`head -1 make_scriptT.in | tail -1`
+			cp -f MAPFILES/$tmp $path
+			mv -f *OOT *INN $path
+			mv -f TESTFILES/*.pgm $path
+			cp -f SIGMA* $path
+			break;;
+
+		it ) 
+			find_nofitP > fit
+			iterateEval.sh
+
+			cp evalOut.txt $path
+			cp make_scriptP.seed $path
+			cp redo.txt fit $path
+			mkdir -p ../del
+			/bin/mv -f *OOT ../del
+			str="Iterate"
+			break;;
+
+		shape ) 
+			str="Shape"
+			ls -l SHAPEFILES/ > $path/links.txt
+			cp SHAPEFILES/SIGMA.TXT $path/
+			/bin/mv -f shape.log $path/
+			/bin/mv -f shape.gif $path/
+			/bin/mv -f view_*.jpg $path/
+			cd SHAPEFILES
+			echo SHAPE.TXT | shape_info > ../$path/shapeInfo.txt
+			cd ..
+			evalReg.sh lsupport/theFour
+			/bin/mv -f ~/send/limb-* $path
+			break;;
+
+		clean ) 
+			cp RESIDUALS.TXT $path
+			cp *INFO.TXT $path
+			str="Clean"
+			break;;
+
+		default ) 
+			echo "################## ERROR ###########"
+			echo "Invalid argument >$answer<"
+			exit
+			break;;
+	esac
+
+done
+
+# Output info to the masterTracker
+d=`date`
+echo "############# $path $answer #########################" >> ../masterTracker.txt
+echo "# $str - $who " >> ../masterTracker.txt
+echo "#    | $d " >> ../masterTracker.txt
+if [ -e notes ]
+then
+	cat notes | sed "s/^/#    | /" >> ../masterTracker.txt
+fi
+/bin/mv -f notes $path
+
+
+echo "###############################################" >> ../masterTracker.txt
+
+echo $path
+
