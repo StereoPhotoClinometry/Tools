@@ -2,6 +2,7 @@
 # Make a list of the 80% best landmarks
 # This will use temporary files in your home directory
 # Updated 11 Jan 2018 to deal wtih v3.0.3
+# Updated 05 Nov 2021 to grep on searchStr instead of level, was grabbing wrong pattern
 
 level=$1
 
@@ -23,7 +24,7 @@ awk -f $exPath/calResiduals.awk RESIDUALS.TXT | grep -v -e Average -e Name > ~/t
 cd ~
 if [ "$level" != "" ] 
 then
-	grep $level tmp80a > tmp80aa
+	grep $searchStr tmp80a > tmp80aa
 	#grep Res:0.0003 tmp80a > tmp80aa
 	#grep $searchStr tmp80a > tmp80aa
 else
