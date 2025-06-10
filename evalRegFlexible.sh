@@ -15,23 +15,31 @@
 # an argument.
 
 # Example. This will run all of the images in listOfPics.txt through the script and 
-# use a scale of 10 km in register. It puts the images into a folder in the working 
+# use a scale of 10 km in register. It will use the reference shape (s), image (i), or map (m) as specified by the user.
+# If a user chooses the (i) option, it will promp the user for an image reference. It puts the images into a folder in the working 
 # directory called evalRegPics. The script will make the folder if it doesn't already 
 # exist. The path is relative! The image list needs to be in the format used make
 # make_scriptR.in (i.e., a leading space, followed by the sumfile name, with an END)
 
-# support/evalRegFlexible.sh listOfPics.txt 10 evalRegPics
+# support/evalRegFlexible.sh listOfPics.txt 10 m evalRegPics
 file=${1}
 scale=${2}
-folder=${3}
+ref=$(3)
+folder=${4}
 
+echo ${3}
 
-if [ -d "${3}" ]
+if [ "${3}" == "i" ]
 then
-    echo "Directory ${3} exists."
+    read -p "Input REFNM " REFNM
+fi
+
+if [ -d "${4}" ]
+then
+    echo "Directory ${4} exists."
 else
-    echo "Error: Directory ${3} does not exist - creating it now."
-    mkdir ${3}
+    echo "Error: Directory ${4} does not exist - creating it now."
+    mkdir ${4}
 fi
 
 # note from Terik = I don't fully understand what this is doing and haven't
@@ -52,7 +60,7 @@ if [ -z $file ]; then
 	exit
 fi
 
-program="REGISTER"		# put in program version/path
+program="/usr/local/bin/spc/satanic/bin/REGISTER"		# put in program version/path
 #program="/usr/local/src/SPC/v3.0.2/bin/REGISTER"		# put in program version/path
 #program="/opt/local/spc/unsup/bin/myRegister"                # put in program version/path
 
@@ -82,7 +90,7 @@ do
 	bigCnt=`echo $bigCnt + 1 | bc`
 	echo $i > tmpRun.txt
 
-	if [ "$map" == "1" ]
+	if [ "${3}" == "m" ]
 	then
 		echo "m" >> tmpRun.txt
 		echo "0" >> tmpRun.txt
@@ -92,6 +100,11 @@ do
 		echo "m" >> tmpRun.txt
 		echo "y" >> tmpRun.txt
 		echo "0" >> tmpRun.txt
+	elif [ "${3}" == "i" ]
+	then
+		echo "i" >> tmpRun.txt
+		echo $REFNM >> tmpRun.txt
+		echo ${2} >> tmpRun.txt
 	else
 		echo "s" >> tmpRun.txt
 		echo ${2} >> tmpRun.txt
@@ -111,8 +124,8 @@ do
 	echo "Running $i ($bigCnt of $total)"
 	$program < tmpRun.txt > tmpDir/$i.txt
 
-	convert TEMPFILE.ppm ./${3}/limbC-$i.jpg
-	convert TEMPFILE.pgm ./${3}/limb-$i.jpg
+	convert TEMPFILE.ppm ./${4}/limbC-$i.jpg
+	convert TEMPFILE.pgm ./${4}/limb-$i.jpg
 done
 
 
