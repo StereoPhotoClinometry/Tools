@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 26 Sept 2017 - Eric E. Palmer
 # Tests to see if the requested link already exists, and if
 #		it is a symbolic link, remove it.  Otherwise, fail.
