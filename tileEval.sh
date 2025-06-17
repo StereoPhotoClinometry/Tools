@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 14 Jan 2016 - Eric E. Palmer
 # Parses the OOT files from make_scriptP/lithosP
 #		It shows # of landmarks without overlap and/or correlated images
