@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 13 Dec 2015 - Eric E. Palmer
 # Just takes a list of images, converts them into jpg and 
 #		puts them into ~/send/
