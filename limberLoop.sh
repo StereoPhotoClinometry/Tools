@@ -116,7 +116,7 @@ cd ..
 echo "Finished limber loop 1"
 
 
-for l in {2..$nloops}
+for (( l=2; l<=$nloops; l++ ));
 do
 support/limber
 printf "0\n0 1000\ny" | coverage
