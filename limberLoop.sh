@@ -81,7 +81,7 @@ echo "$"
 echo "$"
 echo "$"
 echo "$"
-echo -e "0\n0 1000\ny" | coverage
+printf "0\n 0 1000\n y" | coverage
 echo "$"
 echo "$"
 echo "$"
@@ -98,15 +98,16 @@ cp coverage_g.pgm coverage_limbs_round1.pgm
 sed '1d' SHAPEFILES/SHAPE0.TXT >VECS.TXT
 sed '1d' LIMBVECS.TXT >>VECS.TXT
 
-echo -e "VECS.TXT\n"$q"\nSHAPEFILES/SHAPEL_q"$q"_vecs2cube_round1.TXT" | vecs2cube
+printf "VECS.TXT\n${q}\nSHAPEFILES/SHAPEL_q${q}_vecs2cube_round1.TXT" 
+printf "VECS.TXT\n${q}\nSHAPEFILES/SHAPEL_q${q}_vecs2cube_round1.TXT" | vecs2cube
 
-ShapeFormatConverter -input SHAPEFILES/SHAPEL_q"$q"_vecs2cube_round1.TXT -output SHAPEFILES/SHAPEL_q"$q"_vecs2cube_round1.obj
+ShapeFormatConverter -input SHAPEFILES/SHAPEL_q${q}_vecs2cube_round1.TXT -output SHAPEFILES/SHAPEL_q${q}_vecs2cube_round1.obj
 
-sed '1d' SHAPEFILES/SHAPEL_q"$q"_vecs2cube_round1.TXT >newVecs.txt
-support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q"$q$_LimberLoop
-echo "support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q"$q"_LimberLoop" >> notes
+sed '1d' SHAPEFILES/SHAPEL_q${q}_vecs2cube_round1.TXT >newVecs.txt
+support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q${q}_LimberLoop
+echo "support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q${q}_LimberLoop" >> notes
 
-cp vecs2shape/SHAPEL_q"$q"_LimberLoop_vecs2shape_q"$q"_l"$lChoice".TXT SHAPEFILES/SHAPEL_LimberLoop_round1.TXT
+cp vecs2shape/SHAPEL_q${q}_LimberLoop_vecs2shape_q${q}_l${lChoice}.TXT SHAPEFILES/SHAPEL_LimberLoop_round1.TXT
 cd SHAPEFILES/
 ../support/relink.sh SHAPEL_LimberLoop_round1.TXT SHAPE.TXT
 ls -l SHAPE.TXT | tee -a ../notes
@@ -118,16 +119,17 @@ echo "Finished limber loop 1"
 for l in {2..$nloops}
 do
 support/limber
-echo -e "0\n0 1000\ny" | coverage
+printf "0\n0 1000\ny" | coverage
 cp coverage_g.pgm "coverage_limbs_round$l.pgm"
 sed '1d' SHAPEFILES/SHAPEL_LimberLoop_round$((l-1)).TXT >VECS.TXT
 sed '1d' LIMBVECS.TXT >>VECS.TXT
-echo -e "VECS.TXT\n128\nSHAPEFILES/SHAPEL_q"$q"_vecs2cube_round$l.TXT" | vecs2cube
-ShapeFormatConverter -input SHAPEFILES/SHAPEL_q"$q"_vecs2cube_round$l.TXT -output SHAPEFILES/SHAPEL_q"$q"_vecs2cube_round$l.obj
-sed '1d' SHAPEFILES/SHAPEL_q"$q"_vecs2cube_round$l.TXT >newVecs.txt
-support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q"$q"_LimberLoop_round$l
-echo "support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q"$q"_LimberLoop_round$l" >> notes
-cp vecs2shape/SHAPEL_q"$q"_LimberLoop_round"$l"_vecs2shape_q"$q"_l"$lChoice".TXT SHAPEFILES/SHAPEL_LimberLoop_round$l.TXT
+printf "VECS.TXT\n${q}\nSHAPEFILES/SHAPEL_q${q}_vecs2cube_round${l}.TXT"
+printf "VECS.TXT\n${q}\nSHAPEFILES/SHAPEL_q${q}_vecs2cube_round${l}.TXT" | vecs2cube
+ShapeFormatConverter -input SHAPEFILES/SHAPEL_q${q}_vecs2cube_round$l.TXT -output SHAPEFILES/SHAPEL_q${q}_vecs2cube_round$l.obj
+sed '1d' SHAPEFILES/SHAPEL_q${q}_vecs2cube_round${l}.TXT >newVecs.txt
+support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q${q}_LimberLoop_round$l
+echo "support/runVecs2shapeMulti.sh newVecs.txt $q $lmin $lmax SHAPEL_q${q}_LimberLoop_round${l}" >> notes
+cp vecs2shape/SHAPEL_q${q}_LimberLoop_round${l}_vecs2shape_q${q}_l${lChoice}.TXT SHAPEFILES/SHAPEL_LimberLoop_round$l.TXT
 cd SHAPEFILES/
 ../support/relink.sh SHAPEL_LimberLoop_round$l.TXT SHAPE.TXT
 ls -l SHAPE.TXT | tee -a ../notes
