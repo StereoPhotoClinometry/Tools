@@ -28,7 +28,7 @@ list="01 02 03 04 05 06 07 08 09 10"
 
 for i in $list
 do
-	echo "~~~~Running view_$i~~~~"
+	echo "~~~~Running view_${i}~~~~"
 	if [ -f "support/geometry_$i.in" ]; then
   		cp -f support/geometry_$i.in geometry.in
 	else
