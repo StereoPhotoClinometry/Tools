@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script runs limber in a loop
-# To run: ./limberLoop.sh <pic list filename> <limber input file> <qsize> <lmin> <lmax> <lChoice> <number of loops>
+# To run: ./limberLoop.sh <pic list filename> <limber input file> <qsize> <lmin> <lmax> <lChoice> <number of loops> (optional) <evalRegOutDir>
 # Where:
 # pic list filename = the file with the list of pictures to pass through limber (ex. PICTLIST.TXT)
 # limber input file = the .in file tthat contains the set of limber commands to execute (ex. limber.in)
@@ -9,11 +9,12 @@
 # lmin/lmax = the min/max sphereical harmonics order (ex. 3/17)
 # lChoice = the starting point harmonic to use for the next round of each loop through limber betweeen lmin and lmax
 # number of loops = the number of times to execute limber (ex. 7)
+# evalRegOutDir = optional argument to specify the output directory evalReg will place files. Default is ~/send
 #
 # Thus, an example execution command might look like: `./limberLoop.sh PICLIST.TXT limber.in 128 3 17 9 7`
 # 
 #
-# Edited by Ally Glantzberg (allison.glantzberg@jhuapl.edu) 2025-07-17
+# Edited by Ally Glantzberg (allison.glantzberg@jhuapl.edu) 2025-09-03
 
 echo "Required No. of Args: 7"
 echo "No. of Args provided: $#"
@@ -35,6 +36,8 @@ lmax=$5
 lChoice=$6
 nloops=$7
 fi
+
+outDir=${8:-~/send}
 
 while [[ $lChoice -le $lmin ||  $lChoice -ge $lmax ]]
 do
@@ -140,6 +143,9 @@ done
 
 
 # compare images to shape model to see how we are doing so far
-rm ~/send/*
-support/evalReg.sh imagesWithLimbs
+if [ -d $outDir ]; then
+    rm $outDir/*
+fi
+
+support/evalReg.sh imagesWithLimbs $outDir
 
