@@ -11,9 +11,9 @@
 
 # Makes a dense bigmap using the cookbook steps.
 
-# Example: support/makeBigmapOnPicture.sh D7175061210G 388 722 0.0000625 175 0.0001 0.00005 support/XXX0.00005.SEED
+# Example: support/makeBigmapOnPicture.sh D7175061210G 388 722 0.0000625 175 0.0001 0.00005 support/XXX0.00005.SEED -d
 
-# That will create a bigmap at pixel line location 456 409 in the image D7175061210G.
+# That will create a bigmap at pixel line location 456 409 in the image D7175061210G using the -d (dense) option.
 # The bigmap GSD is 0.0000625 km, the bigmap halfsize is 175, the max scale of maplets
 # used to make the bigmap is 0.0001, and the maplets to be made have a GSD of 0.00005.
 # The tiling seed will be XXX0.00005.SEED.
@@ -30,6 +30,7 @@ halfSize=$5
 maxScale=$6
 mapletScale=$7 # in units of km
 tileSeed=$8
+tileOpt=${9:--d}
 
 # The bigmap name will be the six character pixel/line location of the bigmap center
 mapname=${2}${3}
