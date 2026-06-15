@@ -16,8 +16,8 @@ from pathlib import Path
 #     #LIMB, UNC(M), PXRSD, FLAG, mxslp, dHT.
 #
 # Author: Carolyn Ernst
-# Version: 1.0
-# Last Modified: 2026-01-23
+# Version: 1.2
+# Last Modified: 2026-06-15
 
 
 # ---------- PICINFO CONFIG ----------
@@ -44,6 +44,22 @@ MONTH_NAMES = {
     "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
     "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
 }
+
+# Unit tokens that can appear after numeric values.
+# They should be consumed instead of emitted as separate CSV columns.
+UNIT_TOKENS = {"m", "mr", "km", "cm", "mm"}
+
+def is_unit_token(tok: str) -> bool:
+    """True when tok is a standalone unit token."""
+    return tok.strip().lower() in UNIT_TOKENS
+
+def consume_value_and_unit(tokens, idx):
+    """Return (value, next_idx), skipping one optional unit token after value."""
+    value = tokens[idx] if idx < len(tokens) else ""
+    idx += 1
+    if idx < len(tokens) and is_unit_token(tokens[idx]):
+        idx += 1
+    return value, idx
 
 # ---------- PICINFO HELPERS ----------
 
@@ -130,6 +146,8 @@ def parse_picinfo_line_with_utc(tokens):
     PICINFO WITH UTC:
       PICNM  YYYY MON DD HH:MM:SS.SSS  RES  [km]  #LMK  #LIM  CODE  PXRSD  V0_RSD  ...
     Assumes CODE has been normalized to a single token (#c, #>b, *c, #*c, etc.).
+    This parser consumes optional unit tokens after every numeric field so they
+    do not become their own CSV columns.
     """
     picnm = tokens[0]
 
@@ -142,8 +160,8 @@ def parse_picinfo_line_with_utc(tokens):
         utc = " ".join(tokens[1:5])
         res = tokens[5]
         idx = 6
-        # optional 'km'
-        if idx < len(tokens) and tokens[idx].lower() == "km":
+        # optional RES unit, e.g. "m", "mr", or "km"
+        if idx < len(tokens) and is_unit_token(tokens[idx]):
             idx += 1
         rest = tokens[idx:]
 
@@ -152,15 +170,16 @@ def parse_picinfo_line_with_utc(tokens):
     code = rest[2] if len(rest) > 2 else ""
     after = rest[3:] if len(rest) > 3 else []
 
-    pxrsd  = after[0] if len(after) > 0 else ""
-    v0_rsd = after[1] if len(after) > 1 else ""
-    dv0cx  = after[2] if len(after) > 2 else ""
-    dv0cy  = after[3] if len(after) > 3 else ""
-    dv0cz  = after[4] if len(after) > 4 else ""
-    dcx    = after[5] if len(after) > 5 else ""
-    dcy    = after[6] if len(after) > 6 else ""
-    dcz    = after[7] if len(after) > 7 else ""
-    phase  = after[8] if len(after) > 8 else ""
+    idx = 0
+    pxrsd, idx = consume_value_and_unit(after, idx)
+    v0_rsd, idx = consume_value_and_unit(after, idx)
+    dv0cx, idx = consume_value_and_unit(after, idx)
+    dv0cy, idx = consume_value_and_unit(after, idx)
+    dv0cz, idx = consume_value_and_unit(after, idx)
+    dcx, idx = consume_value_and_unit(after, idx)
+    dcy, idx = consume_value_and_unit(after, idx)
+    dcz, idx = consume_value_and_unit(after, idx)
+    phase = after[idx] if idx < len(after) else ""
 
     row = [
         picnm, utc, res, lmk, lim, code,
@@ -178,13 +197,18 @@ def parse_picinfo_line_without_utc(tokens):
     PICINFO WITHOUT UTC:
       PICNM  RES  #LMK  #LIM  CODE  PXRSD  V0_RSD  DELTA_V0CX  ...
     Assumes CODE has been normalized.
+    This parser also consumes optional unit tokens after every numeric field so
+    they do not become their own CSV columns.
     """
     picnm = tokens[0]
     utc = ""
 
     if len(tokens) >= 2:
         res = tokens[1]
-        rest = tokens[2:]
+        idx = 2
+        if idx < len(tokens) and is_unit_token(tokens[idx]):
+            idx += 1
+        rest = tokens[idx:]
     else:
         res = ""
         rest = []
@@ -194,15 +218,16 @@ def parse_picinfo_line_without_utc(tokens):
     code = rest[2] if len(rest) > 2 else ""
     after = rest[3:] if len(rest) > 3 else []
 
-    pxrsd  = after[0] if len(after) > 0 else ""
-    v0_rsd = after[1] if len(after) > 1 else ""
-    dv0cx  = after[2] if len(after) > 2 else ""
-    dv0cy  = after[3] if len(after) > 3 else ""
-    dv0cz  = after[4] if len(after) > 4 else ""
-    dcx    = after[5] if len(after) > 5 else ""
-    dcy    = after[6] if len(after) > 6 else ""
-    dcz    = after[7] if len(after) > 7 else ""
-    phase  = after[8] if len(after) > 8 else ""
+    idx = 0
+    pxrsd, idx = consume_value_and_unit(after, idx)
+    v0_rsd, idx = consume_value_and_unit(after, idx)
+    dv0cx, idx = consume_value_and_unit(after, idx)
+    dv0cy, idx = consume_value_and_unit(after, idx)
+    dv0cz, idx = consume_value_and_unit(after, idx)
+    dcx, idx = consume_value_and_unit(after, idx)
+    dcy, idx = consume_value_and_unit(after, idx)
+    dcz, idx = consume_value_and_unit(after, idx)
+    phase = after[idx] if idx < len(after) else ""
 
     row = [
         picnm, utc, res, lmk, lim, code,
@@ -315,8 +340,9 @@ def parse_mapinfo_line_to_row(tokens):
     res  = tokens[1]
 
     idx = 2
-    # Optional 'km' after RES
-    if idx < len(tokens) and tokens[idx].lower() == "km":
+    # Optional RES unit after RES, e.g. "m" or "km".
+    # Keep the numeric RES only; do not emit the unit as a separate CSV column.
+    if idx < len(tokens) and is_unit_token(tokens[idx]):
         idx += 1
 
     # LAT, WLON, RADIUS, #PIC, #OLAP, #LIMB, UNC(M)
@@ -426,4 +452,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
