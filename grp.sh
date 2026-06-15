@@ -1,1 +1,0 @@
-../SPC-utility-tools/toolslink/grepPICINFO.sh
