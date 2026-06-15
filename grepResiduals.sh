@@ -13,6 +13,7 @@
 # Updated November 2023 to fix a bug in the dHT and mxslp sections
 
 # Update 30 November 2023 to add additional info and formatting
+# pass in argument "long" to include the overlaps and limbs
 
 echo '------------------------------------' | tee -a notes
 echo 'grepResiduals run on' $(date +%FT%H%M) | tee -a notes
@@ -54,12 +55,18 @@ echo 'These LMKs have residuals that exceed the specified limit' | tee -a notes
 echo 'v/2, realign, iterate; consider checking for new images' | tee -a notes
 grep "<<" RESIDUALS.TXT | tee -a notes
 
+if [ "$#" -gt 0 ] && [ "$1" = "long" ]; then
+    echo "grepping overlaps and limbs"
+    echo 'This flags images, overlaps, and limbs that exceed the limit' | tee -a notes
+    echo 'Do not worry about overlaps and limbs in a pinch, can veto them' | tee -a notes
+    echo 'For images in LMKs, check alignment carefully' | tee -a notes
+    grep ">>" RESIDUALS.TXT | tee -a notes
+    echo 'End of RESIDUALS.TXT grep' | tee -a notes
+else
+    echo "skipping long overlap and limb grep"
+fi
 
-echo 'This flags images, overlaps, and limbs that exceed the limit' | tee -a notes
-echo 'Do not worry about overlaps and limbs in a pinch, can veto them' | tee -a notes
-echo 'For images in LMKs, check alignment carefully' | tee -a notes
-grep ">>" RESIDUALS.TXT | tee -a notes
-echo 'End of RESIDUALS.TXT grep' | tee -a notes
+
 
 echo 'Grepping PICINFO.TXT' | tee -a notes
 echo 'Run flagged pictures through autoregister' | tee -a notes
