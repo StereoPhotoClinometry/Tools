@@ -10,11 +10,12 @@
 #   bulkMaplet2fits.sh make-maplets.txt
 # 
 # Comments added 1/14/21 by Terik Daly
+# 04/07/25 CME: Edited for the new Terrasaur version of Maplet2Fits
 
 cd MAPFILES/
 while read line
 do
-	Maplet2Fits $line.MAP $line.FITS
+	Maplet2Fits -input-map $line.MAP -output-fits $line.FITS
 done < ../${1}
 cd ..
 
