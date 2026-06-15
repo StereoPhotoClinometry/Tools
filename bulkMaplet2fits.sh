@@ -14,7 +14,7 @@
 cd MAPFILES/
 while read line
 do
-	Maplet2Fits $line.MAP $line.FITS
+	Maplet2Fits -input-map ${line}.MAP -output-fits ${line}.FITS
 done < ../${1}
 cd ..
 
