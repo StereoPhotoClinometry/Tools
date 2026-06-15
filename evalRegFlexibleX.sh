@@ -14,6 +14,11 @@
 # instead of a hard-coded value. I also made the folder where the images get saved to
 # an argument.
 
+# 17 March 2026
+#       Carolyn Ernst
+# Updated this script to use "magick" instead of "convert" to keep up with modern
+# ImageMagick commands.
+
 # Example. This will run all of the images in listOfPics.txt through the script and 
 # use a scale of 10 km in register. It puts the images into a folder in the working 
 # directory called evalRegPics. The script will make the folder if it doesn't already 
@@ -52,7 +57,7 @@ if [ -z $file ]; then
 	exit
 fi
 
-program="REGISTERX1"		# put in program version/path
+program="REGISTERX"		# put in program version/path
 #program="/usr/local/src/SPC/v3.0.2/bin/REGISTER"		# put in program version/path
 #program="/opt/local/spc/unsup/bin/myRegister"                # put in program version/path
 
@@ -111,8 +116,8 @@ do
 	echo "Running $i ($bigCnt of $total)"
 	$program < tmpRun.txt > tmpDir/$i.txt
 
-	convert TEMPFILE.ppm ./${3}/limbC-$i.jpg
-	convert TEMPFILE.pgm ./${3}/limb-$i.jpg
+	magick TEMPFILE.ppm ./${3}/limbC-$i.jpg
+	magick TEMPFILE.pgm ./${3}/limb-$i.jpg
 done
 
 

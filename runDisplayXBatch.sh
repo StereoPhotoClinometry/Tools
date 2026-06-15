@@ -9,11 +9,12 @@
 # It simply makes the images. You provide the image list as an argument.
 
 # Comments added 12/29/20 by Terik Daly.
+# Changed convert to magick to keep up with modern ImageMagick commands 03/17/26 by Carolyn Ernst.
 
 while read line
 do
 echo -e "${line}\n0\nn\nn" | DisplayX
-convert TEMPFILE.pgm TEMPFILE.png
+magick TEMPFILE.pgm TEMPFILE.png
 cp TEMPFILE.png ./Display/${line}_R.png
 done <${1}
 
