@@ -13,7 +13,7 @@
 while read line
 do
 echo -e "$line\ny\n0\nn\nn\nn" | Display
-convert TEMPFILE.pgm TEMPFILE.png
+magick TEMPFILE.pgm TEMPFILE.png
 cp TEMPFILE.png ./Display/${line}_Rclean.png
 done <list-of-pics-to-check.txt
 

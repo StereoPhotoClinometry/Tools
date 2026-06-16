@@ -36,7 +36,7 @@ do
 	fi
 	
 	echo $arg | view_maps
-	convert view.pgm SHAPEVIEWS/view_${i}_maps_$dt.jpg
+	magick view.pgm SHAPEVIEWS/view_${i}_maps_$dt.jpg
 	open SHAPEVIEWS/view_${i}_maps_$dt.jpg
 done
 

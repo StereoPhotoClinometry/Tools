@@ -40,7 +40,7 @@ do
 		cp TEMPFILE.pgm ~/send/$i.pgm
 	
 	else
-		convert TEMPFILE.pgm ~/send/thumb-$i.jpg
+		magick TEMPFILE.pgm ~/send/thumb-$i.jpg
 	fi
 
 

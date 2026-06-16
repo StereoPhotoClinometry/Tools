@@ -75,7 +75,7 @@ do
 	if [ -e LMRK_DISPLAY1.pgm ];
 	then
 		valid=1
-		convert LMRK_DISPLAY1.pgm landmarks.jpg
+		magick LMRK_DISPLAY1.pgm landmarks.jpg
 		/bin/mv -f $path/landmarks.jpg $path/old-landmarks.jpg
 		/bin/mv -f landmarks.jpg $path/landmarks.jpg
 	fi
@@ -85,7 +85,7 @@ do
 	if [ -e LMRK_DISPLAY1.pgm ];
 	then
 		valid=1
-		convert LMRK_DISPLAY1.pgm autoregister.jpg
+		magick LMRK_DISPLAY1.pgm autoregister.jpg
 		/bin/mv -f $path/autoregister.jpg $path/old-autoregister.jpg
 		/bin/mv -f autoregister.jpg $path/autoregister.jpg
 	fi
@@ -93,7 +93,7 @@ do
 	if [ -e TEMPFILE.pgm ];
 	then
 		valid=1
-		convert TEMPFILE.pgm register.jpg
+		magick TEMPFILE.pgm register.jpg
 		/bin/mv -f $path/register.jpg $path/old-register.jpg
 		/bin/mv -f register.jpg $path/register.jpg
 		# Not worrying about this
@@ -101,7 +101,7 @@ do
 	if [ -e TEMPFILE.ppm ];
 	then
 		valid=1
-		convert TEMPFILE.ppm $path/registerC.jpg
+		magick TEMPFILE.ppm $path/registerC.jpg
 	fi
 
 
@@ -116,7 +116,7 @@ do
 	if [ -e TEMPFILE.pgm ];
 	then
 		valid=1
-		convert TEMPFILE.pgm $path/2.jpg
+		magick TEMPFILE.pgm $path/2.jpg
 	fi
 	
 	# How long to wait between pushes 

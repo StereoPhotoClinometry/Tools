@@ -80,12 +80,12 @@ Maplet2FITS MAPFILES/${mapname}.MAP MAPFILES/${mapname}.FITS
 
 # Look at the map
 echo XXXXXX | SHOWMAP
-convert XXXXXX.pgm ./bigmap/${mapname}_$(date +%FT%H%M).png
+magick XXXXXX.pgm ./bigmap/${mapname}_$(date +%FT%H%M).png
 
 open ./bigmap/${mapname}_$(date +%FT%H%M).png
-convert SIGMAS.pgm ./bigmap/${mapname}_SIGMAS_$(date +%FT%H%M).png
+magick SIGMAS.pgm ./bigmap/${mapname}_SIGMAS_$(date +%FT%H%M).png
 open ./bigmap/${mapname}_SIGMAS_$(date +%FT%H%M).png
-convert slope.pgm ./bigmap/${mapname}_slope_$(date +%FT%H%M).png
+magick slope.pgm ./bigmap/${mapname}_slope_$(date +%FT%H%M).png
 open ./bigmap/${mapname}_slope_$(date +%FT%H%M).png
 
 cp SIGMAS.TXT ./bigmap/${mapname}_SIGMAS_$(date +%FT%H%M).TXT
@@ -97,7 +97,7 @@ cp INSIDE.TXT ./bigmap/${mapname}_INSIDE_$(date +%FT%H%M).TXT
 echo -e XXXXXX >map_coverage.tmp
 echo -e ${mapletScale} ${mapletScale} >>map_coverage.tmp
 map_coverage <map_coverage.tmp
-convert coverage_m.pgm ./bigmap/${mapname}_${mapletScale}kmGSD_$(date +%FT%H%M).png
+magick coverage_m.pgm ./bigmap/${mapname}_${mapletScale}kmGSD_$(date +%FT%H%M).png
 open ./bigmap/${mapname}_${mapletScale}kmGSD_$(date +%FT%H%M).png
 
 
