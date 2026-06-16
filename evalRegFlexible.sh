@@ -60,7 +60,7 @@ if [ -z $file ]; then
 	exit
 fi
 
-program="/usr/local/bin/spc/satanic/bin/REGISTER"		# put in program version/path
+program="/usr/local/bin/spc/blessed/bin/REGISTER"		# put in program version/path
 #program="/usr/local/src/SPC/v3.0.2/bin/REGISTER"		# put in program version/path
 #program="/opt/local/spc/unsup/bin/myRegister"                # put in program version/path
 
