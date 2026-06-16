@@ -124,8 +124,8 @@ do
 	echo "Running $i ($bigCnt of $total)"
 	$program < tmpRun.txt > tmpDir/$i.txt
 
-	convert TEMPFILE.ppm ./${4}/limbC-$i.jpg
-	convert TEMPFILE.pgm ./${4}/limb-$i.jpg
+	magick TEMPFILE.ppm ./${4}/limbC-$i.jpg
+	magick TEMPFILE.pgm ./${4}/limb-$i.jpg
 done
 
 
