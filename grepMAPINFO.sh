@@ -15,16 +15,21 @@
 #
 # Author: Carolyn Ernst
 # Version: 1.0
-# Last Modified: 2026-01-22
+# Last Modified: 2026-01-23
 
 # One argument: original behavior
 if [ "$#" -eq 1 ]; then
-  grep "$1" MAPINFO.TXT
+  if ! grep "$1" MAPINFO.TXT; then
+    echo "MAPLET $1 DOES NOT EXIST IN MAPINFO.TXT"
+  fi
   exit 0
 fi
 
 # Two arguments: loop over file
 while IFS= read -r maplet; do
   [ "$maplet" = "END" ] && break
-  grep "$maplet" MAPINFO.TXT
+
+  if ! grep "$maplet" MAPINFO.TXT; then
+    echo "MAPLET $maplet DOES NOT EXIST IN MAPINFO.TXT"
+  fi
 done < "$2"

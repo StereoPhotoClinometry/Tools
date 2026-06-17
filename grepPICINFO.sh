@@ -16,11 +16,13 @@
 #
 # Author: Carolyn Ernst
 # Version: 1.0
-# Last Modified: 2026-01-22
+# Last Modified: 2026-01-23
 
 # One argument: original behavior
 if [ "$#" -eq 1 ]; then
-  grep "$1" PICINFO.TXT
+  if ! grep "$1" PICINFO.TXT; then
+    echo "IMAGE $1 DOES NOT EXIST IN PICINFO.TXT"
+  fi
   exit 0
 fi
 
@@ -28,5 +30,7 @@ fi
 while IFS= read -r image; do
   image="${image#"${image%%[![:space:]]*}"}"  # strip leading whitespace
   [ "$image" = "END" ] && break
-  grep "$image" PICINFO.TXT
+  if ! grep "$image" PICINFO.TXT; then
+    echo "IMAGE $image DOES NOT EXIST IN PICINFO.TXT"
+  fi
 done < "$2"

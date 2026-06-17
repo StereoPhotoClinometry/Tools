@@ -3,6 +3,7 @@
 # This waits a few seconds and updates the SPC output files
 # This will shutdown after a week
 # version 1.0
+# Updated 2026-01-24 to change "convert" to "magick" by CME
 
 time=`echo 60*60*60*12 | bc`		# 12 hours
 time=86400							# week
