@@ -54,7 +54,7 @@ echo "q" >> tmpRun
 echo "y" >> tmpRun
 echo "n" >> tmpRun
 $path/BLEMISHES < tmpRun > /dev/null
-convert TEMPFILE.pgm $web/limber.jpg
+magick TEMPFILE.pgm $web/limber.jpg
 echo "  $img image posted in $web/limber.jpg"
 
 
@@ -80,7 +80,7 @@ do
 		echo "n" >> tmpRun
 		echo "Re-rendering blemish image"
 		$path/BLEMISHES < tmpRun > /dev/null
-		convert TEMPFILE.pgm $web/limber.jpg
+		magick TEMPFILE.pgm $web/limber.jpg
 		echo "$img image posted in $web/limber.jpg"
 		continue;
 	fi
@@ -121,7 +121,7 @@ do
 		echo "n" >> tmpRun
 		echo "n" >> tmpRun
 		Display < tmpRun
-		convert TEMPFILE.pgm $web/limber.jpg
+		magick TEMPFILE.pgm $web/limber.jpg
 		continue;
 	fi
 
@@ -177,7 +177,7 @@ fi
 	echo "y" >> tmpRun
 	echo "n" >> tmpRun
 	/usr/local/bin/spc/blessed/bin/BLEMISHES < tmpRun > /dev/null
-	convert TEMPFILE.pgm $web/limber.jpg
+	magick TEMPFILE.pgm $web/limber.jpg
 	echo "  Updated"
 	echo
 

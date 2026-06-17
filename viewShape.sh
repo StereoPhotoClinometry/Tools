@@ -14,10 +14,10 @@ do
   		cp -f geometry_$i.in geometry.in
 	fi
 	view_shape
-	convert view.pgm view_$i.jpg
+	magick view.pgm view_$i.jpg
 	open view_$i.jpg
 done
 
 
-convert -adjoin -loop 0 -delay 40 view_0[1-8].jpg shape.gif
+magick -adjoin -loop 0 -delay 40 view_0[1-8].jpg shape.gif
 open shape.gif

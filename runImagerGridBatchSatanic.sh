@@ -12,7 +12,7 @@
 while read line
 do
 echo -e "${line}\nn\nn" | Imager_Grid
-convert TEMPFILE.pgm TEMPFILE.png
+magick TEMPFILE.pgm TEMPFILE.png
 cp TEMPFILE.png ./Display/${line}_imagerGrid.png
 done <$1
 

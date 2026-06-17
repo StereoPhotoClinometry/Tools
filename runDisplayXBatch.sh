@@ -13,7 +13,7 @@
 while read line
 do
 echo -e "${line}\n0\nn\nn" | DisplayX
-convert TEMPFILE.pgm TEMPFILE.png
+magick TEMPFILE.pgm TEMPFILE.png
 cp TEMPFILE.png ./Display/${line}_R.png
 done <${1}
 
