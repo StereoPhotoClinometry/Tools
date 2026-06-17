@@ -10,7 +10,7 @@ while read line
 do
 echo -e "$line\n0\ny\n0\nn\nn\nn" | Display
 #echo -e "$line\nn\ny\nn" | Display
-convert TEMPFILE.pgm TEMPFILE.png
+magick TEMPFILE.pgm TEMPFILE.png
 cp TEMPFILE.png ./Display/${line}_clean.png
 done <$1
 

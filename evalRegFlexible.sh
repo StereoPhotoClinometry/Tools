@@ -60,7 +60,7 @@ if [ -z $file ]; then
 	exit
 fi
 
-program="/usr/local/bin/spc/satanic/bin/REGISTER"		# put in program version/path
+program="/usr/local/bin/spc/blessed/bin/REGISTER"		# put in program version/path
 #program="/usr/local/src/SPC/v3.0.2/bin/REGISTER"		# put in program version/path
 #program="/opt/local/spc/unsup/bin/myRegister"                # put in program version/path
 
@@ -124,8 +124,8 @@ do
 	echo "Running $i ($bigCnt of $total)"
 	$program < tmpRun.txt > tmpDir/$i.txt
 
-	convert TEMPFILE.ppm ./${4}/limbC-$i.jpg
-	convert TEMPFILE.pgm ./${4}/limb-$i.jpg
+	magick TEMPFILE.ppm ./${4}/limbC-$i.jpg
+	magick TEMPFILE.pgm ./${4}/limb-$i.jpg
 done
 
 

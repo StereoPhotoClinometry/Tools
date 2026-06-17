@@ -30,7 +30,6 @@ fi
 while IFS= read -r image; do
   image="${image#"${image%%[![:space:]]*}"}"  # strip leading whitespace
   [ "$image" = "END" ] && break
-
   if ! grep "$image" PICINFO.TXT; then
     echo "IMAGE $image DOES NOT EXIST IN PICINFO.TXT"
   fi
