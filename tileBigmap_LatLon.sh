@@ -139,8 +139,8 @@ echo "........................................................."
 
 # determine coverage of bigmap at desired maplet scale
 #rm map_coverage.tmp
-echo -e XXXXXX >map_coverage.tmp
-echo -e ${mapletScale} ${mapletScale} >>map_coverage.tmp
+echo XXXXXX >map_coverage.tmp
+echo ${mapletScale} ${mapletScale} >>map_coverage.tmp
 map_coverage <map_coverage.tmp
 #rm map_coverage.tmp
 magick coverage_m.pgm ./bigmap/${mapname}_${mapletScale}kmpreCoverage_$(date +%FT%H%M).png
