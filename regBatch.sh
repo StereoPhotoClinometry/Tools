@@ -53,8 +53,8 @@ do
 
 
 	# Copy stuff for review
-	convert TEMPFILE.ppm runOut/$item.jpg
-	convert TEMPFILE.ppm ~/send/$item.jpg
+	magick TEMPFILE.ppm runOut/$item.jpg
+	magick TEMPFILE.ppm ~/send/$item.jpg
 	cp tmpOut.txt runOut/$item.log
 
 

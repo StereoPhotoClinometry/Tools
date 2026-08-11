@@ -16,8 +16,8 @@ do
 	sum=`echo $sum + $mScore | bc`
 	count=`echo $count + 1 | bc`
 	echo $item | showmap
-	convert $item.pgm ~/send/$item.jpg
-	convert SIGMAS.pgm   -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}m  ~/send/sig-$item.jpg
+	magick $item.pgm ~/send/$item.jpg
+	magick SIGMAS.pgm   -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}m  ~/send/sig-$item.jpg
 	rm $item.pgm
 	rm SIGMAS.pgm
 done

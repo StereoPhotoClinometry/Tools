@@ -60,14 +60,14 @@ echo "###################"
 ################
 # Copy simple files
 /bin/cp CSPLOT.TXT $path/$id/CSPLOT.TXT
-convert CSPLOT.ppm -resize 512x512 $path/$id/csplot.jpg
+magick CSPLOT.ppm -resize 512x512 $path/$id/csplot.jpg
 /bin/cp evalResults-$id $path/$id/evalResults
 /bin/cp -f notes $path/$id/notes
 
 # Build SIGMAS
 score=`tail -2 SIGMAS.TXT | head -1 | cut -c 23-30`
 mScore=`echo "scale=2; $score * 1000" | bc | cut -c -4`
-convert SIGMAS.pgm   -resize 512x512 -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}m   $path/$id/sig.jpg
+magick SIGMAS.pgm   -resize 512x512 -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}m   $path/$id/sig.jpg
 
 
 echo "###################"
@@ -77,20 +77,20 @@ echo "###################"
 echo XXXXXX > tmpRun
 echo 0 .00014 >> tmpRun
 map_coverage < tmpRun
-convert coverage_m.pgm -resize 512x512 $path/$id/post.jpg
+magick coverage_m.pgm -resize 512x512 $path/$id/post.jpg
 
 echo "###################"
 echo "##### STEP 5 ######"
 echo "###################"
 # Show current map
 echo XXXXXX | showmap 
-convert XXXXXX.pgm -resize 512x512 $path/$id/curr.jpg
+magick XXXXXX.pgm -resize 512x512 $path/$id/curr.jpg
 echo XXXXXX > tmpRun
 echo 1 2 3 45 >> tmpRun
 view_map_rgb < tmpRun
-convert view.ppm -resize 512x512 $path/$id/rgb.jpg
+magick view.ppm -resize 512x512 $path/$id/rgb.jpg
 echo XXXXXX | view_map_stereo
-convert view.pgm -resize 512x512 $path/$id/stereo.jpg
+magick view.pgm -resize 512x512 $path/$id/stereo.jpg
 
 # Not using find_nofitT
 #find_nofitT > $path/$id/fit.txt
@@ -101,14 +101,14 @@ echo "##### STEP 6 ######"
 echo "###################"
 # Run and copy the register view of the maplet
 viewReg.sh ${id}
-convert TEMPFILE.pgm $path/$id/reg.jpg
+magick TEMPFILE.pgm $path/$id/reg.jpg
 
 
 echo "###################"
 echo "##### STEP 7 ######"
 echo "###################"
 # Copy landmark_display
-convert LMRK_DISPLAY1.pgm $path/$id/dis.jpg
+magick LMRK_DISPLAY1.pgm $path/$id/dis.jpg
 
 # Put the template in the id directory
 /bin/cp /opt/local/spc/bin/evalTemplate.html $path/$id/eval.html

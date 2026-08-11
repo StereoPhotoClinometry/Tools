@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 13 Dec 2015 - Eric E. Palmer
 # Just takes a list of images, converts them into jpg and 
 #		puts them into ~/send/
@@ -47,7 +49,7 @@ do
 		cp TEMPFILE.pgm ~/send/$i.pgm
 	
 	else
-		convert TEMPFILE.pgm ~/send/thumb-$i.jpg
+		magick TEMPFILE.pgm ~/send/thumb-$i.jpg
 	fi
 
 

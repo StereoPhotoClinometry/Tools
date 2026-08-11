@@ -21,7 +21,7 @@ do
 		echo "n" >> tmp
 		echo "n" >> tmp
 		/usr/local/bin/Display < tmp
-		convert TEMPFILE.pgm ~/send/$i.jpg
+		magick TEMPFILE.pgm ~/send/$i.jpg
 	else
 		echo skipping $i
 	fi
