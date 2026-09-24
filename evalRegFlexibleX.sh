@@ -57,7 +57,19 @@ if [ -z $file ]; then
 	exit
 fi
 
-program="REGISTERX"		# put in program version/path
+# Check if REGISTERX exists; if not, check for  REGISTERX1
+if command -v REGISTERX >/dev/null 2>&1; then
+    program="REGISTERX"
+elif command -v REGISTERX1 >/dev/null 2>&1; then
+    program="REGISTERX1"
+else
+    echo "Error: Neither REGISTERX nor REGISTERX1 is on the PATH." >&2
+    exit 1
+fi
+
+echo "USING PROGRAM: $program" >&2
+
+#program="REGISTERX"		# put in program version/path
 #program="/usr/local/src/SPC/v3.0.2/bin/REGISTER"		# put in program version/path
 #program="/opt/local/spc/unsup/bin/myRegister"                # put in program version/path
 
