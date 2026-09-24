@@ -8,6 +8,7 @@
 
 bash grepNasty.sh
 find_nofit
+find_nofitX
 echo 'redo.txt following iteration contained' >>notes
 cat redo.txt | tee -a notes
 echo "end of redo.txt" >>notes
@@ -18,3 +19,4 @@ echo "end of Running" >>notes
 echo "here come the nofits" >>notes
 grep "nofit" eval/evalOut.txt | sort -k2 | tee -a notes
 echo "end of nofits" >>notes
+bash runNofitsTracker.sh
