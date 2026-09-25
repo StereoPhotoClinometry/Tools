@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 14 Dec 2015 - Eric E. Palmer
 # This prints the line right after some keyword
 # Version 1.1 -- 1 Mar 16

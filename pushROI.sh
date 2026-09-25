@@ -52,7 +52,7 @@ score=`tail -2 SIGMAS.TXT | head -1 | cut -c 23-30`
 mScore=`echo "scale=2; $score * 100000" | bc | cut -c -4`
 score=`tail -2 SIGMAS.TXT | head -1 | cut -c 47-`
 aScore=`echo "scale=2; $score * 100000" | bc | cut -c -4`
-convert SIGMAS.pgm   -resize 512x512 -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}cm--Avg:${aScore}cm   $path/$id/sigBig.jpg
+magick SIGMAS.pgm   -resize 512x512 -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}cm--Avg:${aScore}cm   $path/$id/sigBig.jpg
 
 
 echo "###################"

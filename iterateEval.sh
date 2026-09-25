@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 14 Jan 2016 - Eric E. Palmer
 # Parses the OOT files from make_scriptP/lithosP
 #		It shows # of landmarks without overlap and/or correlated images
@@ -22,7 +24,7 @@ echo "#",  $0, $vers >> eval/evalRedo.txt
 
 if [ "$file" == "" ]
 then
-	list=`ls | grep .OOT`
+	list=`ls | grep -E '\.OOT$|\.OO$'`
 	total=`ls | grep .INN | wc -l`
 else
 	list=`cat $file`

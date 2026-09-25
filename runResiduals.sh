@@ -8,9 +8,9 @@ else
     mkdir residualsOutputs
 fi
 
-echo -e Running residuals with arguments $1 $2 $3 | tee -a notes
+echo "Running residuals with arguments $1 $2 $3" | tee -a notes
 
-echo -e "$1 $2 $3 $4" | residuals >residualsLog.txt
+echo "$1 $2 $3 $4" | residuals >residualsLog.txt
 open residualsLog.txt
 
 cp RESIDUALS.TXT ./residualsOutputs/RESIDUALS_$(date +%FT%H%M)_${4}.TXT

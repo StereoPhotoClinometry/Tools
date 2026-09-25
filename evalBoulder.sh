@@ -31,7 +31,7 @@ echo $dest
 echo "Bigmapping $file for $root"
 bigMapRef < $file > tmp
 echo $root | showmap
-convert $root.pgm   $dest/$root.jpg
+magick $root.pgm   $dest/$root.jpg
 
 echo -n Number of maplets:
 wc -l INSIDE.TXT
@@ -58,7 +58,7 @@ do
 	LITHOS < tmpRun > tmp
 	grep Lat tmp > $dest/t-$item.txt 
 	grep SCALE tmp >> $dest/t-$item.txt
-	convert LMRK_DISPLAY1.pgm $dest/$item.jpg
+	magick LMRK_DISPLAY1.pgm $dest/$item.jpg
 
 done
 

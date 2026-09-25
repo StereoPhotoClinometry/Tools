@@ -5,7 +5,15 @@
 
 # Currently, use support/eval-list
 file=$1
+outDir=${2:-~/send}
+
+
 #file=support/eval-list
+
+if [ ! -d $outDir ]; then
+  echo "Directory '$outDir' does not exist. Creating it now..."
+  mkdir -p $outDir
+fi
 
 
 if [ "$file" == "-m" ] 
@@ -29,7 +37,7 @@ program="/opt/local/spc/unsup/bin/myRegister"                # put in program ve
 
 mkdir -p tmpDir
 
-list=`grep -v "#" $file | cut -c 1-13`
+list=`grep -v "#" $file | cut -c 1-12`
 bigCnt=0
 total=`wc -l $file`
 
@@ -82,8 +90,8 @@ do
 	echo "Running $i ($bigCnt of $total)"
 	$program < tmpRun.txt > tmpDir/$i.txt
 
-	convert TEMPFILE.ppm ~/send/limbC-$i.jpg
-	convert TEMPFILE.pgm ~/send/limb-$i.jpg
+	magick TEMPFILE.ppm $outDir/limbC-$i.jpg
+	magick TEMPFILE.pgm $outDir/limb-$i.jpg
 done
 
 

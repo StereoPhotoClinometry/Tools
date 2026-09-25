@@ -46,7 +46,7 @@ echo "q" >> tmpRun
 $extraBin/LITHOS < tmpRun > tmpOut
 echo -n $item " "
 
-convert LMRK_DISPLAY1.pgm ~/send/$item.jpg
+magick LMRK_DISPLAY1.pgm ~/send/$item.jpg
 
 awk -f $base/landmarkEval.awk tmpOut
 

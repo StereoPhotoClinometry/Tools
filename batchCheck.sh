@@ -50,7 +50,7 @@ do
 		$program < tmpRun.txt > tmpOut.txt
 		echo "#" >tmpRun.txt			# empty the lithos input
 		cat tmpOut.txt >> tmpFull.txt		# save original output - for trackign
-		convert LMRK_DISPLAY1.pgm ~/send/$i.jpg
+		magick LMRK_DISPLAY1.pgm ~/send/$i.jpg
 	fi
 
 done

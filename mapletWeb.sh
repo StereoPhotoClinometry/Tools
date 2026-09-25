@@ -125,14 +125,14 @@ echo "###################"
 ################
 # Copy simple files
 /bin/cp CSPLOT.TXT $path/$id/CSPLOT.TXT
-convert CSPLOT.ppm -resize 512x512 $path/$id/csplot.jpg
+magick CSPLOT.ppm -resize 512x512 $path/$id/csplot.jpg
 /bin/cp evalResultsX $path/$id/evalResults
 /bin/cp -f notes $path/$id/notes
 
 # Build SIGMAS
 #score=`tail -2 SIGMAS.TXT | head -1 | cut -c 23-30`
 #mScore=`echo "scale=2; $score * 1000 * 100" | bc | cut -c -4`
-#convert SIGMAS.pgm   -resize 512x512 -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}cm   $path/$id/sig.jpg
+#magick SIGMAS.pgm   -resize 512x512 -fill white -gravity North -pointsize 15 -annotate +0+10 Max:${mScore}cm   $path/$id/sig.jpg
 
 
 echo "###################"
@@ -142,26 +142,26 @@ echo "###################"
 #echo XXXXXX > tmpRun
 #echo 0 $GSD >> tmpRun
 #map_coverage < tmpRun
-#convert coverage_m.pgm -resize 512x512 $path/$id/post.jpg
+#magick coverage_m.pgm -resize 512x512 $path/$id/post.jpg
 
 #half=`echo $GSD / 2.0 + .000001 | bc -l`
 #echo $half
 #echo XXXXXX > tmpRun
 #echo 0 $half >> tmpRun
-#convert coverage_m.pgm -resize 512x512 $path/$id/postHigh.jpg
+#magick coverage_m.pgm -resize 512x512 $path/$id/postHigh.jpg
 
 echo "###################"
 echo "##### STEP 5 show/view map"
 echo "###################"
 # Show current map
 echo ${id}$code | showmap 
-convert ${id}$code.pgm -resize 512x512 $path/$id/curr.jpg
+magick ${id}$code.pgm -resize 512x512 $path/$id/curr.jpg
 echo ${id}$code > tmpRun
 echo 1 2 3 45 >> tmpRun
 view_map_rgb < tmpRun
-convert view.ppm -resize 512x512 $path/$id/rgb.jpg
+magick view.ppm -resize 512x512 $path/$id/rgb.jpg
 echo ${id}$code | view_map_stereo
-convert view.pgm -resize 512x512 $path/$id/stereo.jpg
+magick view.pgm -resize 512x512 $path/$id/stereo.jpg
 
 
 cd MAPFILES
@@ -180,14 +180,14 @@ echo "##### STEP 6 viewReg"
 echo "###################"
 # Run and copy the register view of the maplet
 viewRegAll.sh ${id}$code
-convert TEMPFILE.pgm $path/$id/reg.jpg
+magick TEMPFILE.pgm $path/$id/reg.jpg
 
 
 echo "###################"
 echo "##### STEP 7 copy example landmark display######"
 echo "###################"
 # Copy landmark_display
-convert LMRK_DISPLAY1.pgm $path/$id/dis.jpg
+magick LMRK_DISPLAY1.pgm $path/$id/dis.jpg
 
 # Put the template in the id directory
 /bin/cp /opt/local/spc/bin/mapletTemplate.html $path/$id/maplet.html
@@ -213,7 +213,7 @@ echo n >> tmp
 echo n >> tmp
 /opt/local/spc/unsup/unsup_v3_0_3D_2018_12_03/bin/Display < tmp
 #/usr/local/bin/Display < tmp
-convert -flip TEMPFILE.pgm $path/$id/source-full.png
+magick -flip TEMPFILE.pgm $path/$id/source-full.png
 cp -f /opt/local/spc/flightBennu/nftImg/$id.png $path/$id/source.png
 
 

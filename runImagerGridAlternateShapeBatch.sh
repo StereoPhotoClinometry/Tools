@@ -15,7 +15,7 @@
 while read line
 do
 echo -e "$line\ny\n$2\nn" | imager_grid
-convert TEMPFILE.pgm TEMPFILE.png
+magick TEMPFILE.pgm TEMPFILE.png
 cp TEMPFILE.png ./Display/${line}_G_alt.png
 done <$1
 
